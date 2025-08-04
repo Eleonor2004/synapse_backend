@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import graph as graph_router
 from app.routers import auth as auth_router # <-- IMPORT NEW ROUTER
-from app.db.graph_db import db
+from app.db.graph_db import db_manager
 from app.routers import users as users_router
 from app.routers import workbench as workbench_router
 # <-- IMPORT NEW ROUTER
@@ -15,7 +15,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-origins = ["http://localhost:3000"]
+origins = ["http://localhost:3001", "*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -34,13 +34,13 @@ app.include_router(graph_router.router, prefix="/api/v1/graph", tags=["Graph"])
 @app.on_event("startup")
 def on_startup():
     """Create initial admin user on startup if they don't exist."""
-    with db.get_session() as session:
+    with db_manager.get_session() as session:
         admin_user = user_crud.get_user(session, "admin")
         if not admin_user:
             print("Creating initial admin user...")
             initial_admin = UserCreate(
                 username="admin",
-                password="admin",
+                password="adminpasswor",
                 full_name="Default Admin",
                 role="admin"
             )
@@ -49,7 +49,7 @@ def on_startup():
             
 @app.on_event("shutdown")
 def shutdown_event():
-    db.close()
+    db_manager.close()
     print("Database connection closed.")
 
 @app.get("/")
