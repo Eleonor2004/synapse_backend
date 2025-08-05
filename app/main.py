@@ -15,7 +15,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-origins = ["http://localhost:3001", "*"]
+origins = ["http://localhost:3001", "https://synapse-frontend-bay.vercel.app"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
