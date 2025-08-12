@@ -104,3 +104,19 @@ def delete_user(db: Session, username: str) -> bool:
     # The summary object has the counters attribute
     return summary.counters.nodes_deleted > 0
     # -----------------------
+
+# ... (keep all existing imports and functions)
+
+def count_user_analyses(db: Session, username: str) -> int:
+    """
+    Counts the number of ListingSet nodes connected to a user via an OWNS relationship.
+    """
+    query = """
+    MATCH (u:User {username: $username})-[:OWNS]->(ls:ListingSet)
+    RETURN count(ls) AS count
+    """
+    result = db.run(query, username=username)
+    record = result.single()
+    # If the user has no analyses, the query returns a record with count 0.
+    # If the user doesn't exist, it returns None.
+    return record["count"] if record else 0

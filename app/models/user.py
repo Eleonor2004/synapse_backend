@@ -38,3 +38,20 @@ class UserUpdate(BaseModel):
     full_name: Optional[str] = None
     role: Optional[str] = None
     is_active: Optional[bool] = None
+
+# ... (keep all existing models: Token, TokenData, User, etc.)
+
+class ProfileUpdate(BaseModel):
+    """
+    Defines the fields a user is allowed to update on their own profile.
+    We make them optional so the user can update just one field at a time.
+    """
+    full_name: Optional[str] = None
+
+class Profile(User):
+    """
+    Defines the full profile data returned to a logged-in user.
+    It inherits all fields from the base User model (username, role, etc.)
+    and adds the analysis count.
+    """
+    analysis_count: int

@@ -17,3 +17,10 @@ class ListingSet(ListingSetBase):
 
     class Config:
         from_attributes = True # Allows creating model from ORM objects
+class ListingSetUpdate(BaseModel):
+    """
+    Defines the fields a user can update on an existing ListingSet.
+    All fields are optional to allow for partial updates (e.g., changing only the name).
+    """
+    name: Optional[str] = None
+    description: Optional[str] = None

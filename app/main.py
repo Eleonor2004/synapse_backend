@@ -2,11 +2,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import graph as graph_router
 from app.routers import auth as auth_router # <-- IMPORT NEW ROUTER
+from app.routers import profile as profile_router 
 from app.db.graph_db import db_manager
 from app.routers import users as users_router
 from app.routers import workbench as workbench_router
-# <-- IMPORT NEW ROUTER
-from app.crud import user_crud # <-- Add this
+from app.routers import dashboard as dashboard_router
+from app.routers import analyses as analyses_router
+from app.routers import history as history_router 
+from app.crud import user_crud 
 from app.models.user import UserCreate 
 
 app = FastAPI(
@@ -26,6 +29,10 @@ app.add_middleware(
 
 # --- INCLUDE THE NEW ROUTERS ---
 app.include_router(auth_router.router, prefix="/api/v1/auth", tags=["Authentication"])
+app.include_router(profile_router.router, prefix="/api/v1/profile", tags=["Profile"]) # 
+app.include_router(dashboard_router.router, prefix="/api/v1/dashboard", tags=["Dashboard"])
+app.include_router(analyses_router.router, prefix="/api/v1/analyses", tags=["Analyses History"])
+app.include_router(history_router.router, prefix="/api/v1/history", tags=["History"])
 app.include_router(users_router.router, prefix="/api/v1/users", tags=["Users"]) 
 app.include_router(workbench_router.router, prefix="/api/v1/workbench", tags=["Workbench"])
 app.include_router(graph_router.router, prefix="/api/v1/graph", tags=["Graph"])
