@@ -47,7 +47,7 @@ def on_startup():
             print("Creating initial admin user...")
             initial_admin = UserCreate(
                 username="admin",
-                password="adminpasswor",
+                password="admin",
                 full_name="Default Admin",
                 role="admin"
             )
