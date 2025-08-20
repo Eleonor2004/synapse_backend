@@ -33,7 +33,10 @@ def login_for_access_token(
             db, username=form_data.username, action=ActionType.LOGIN_FAILURE,
             details={"client_ip": client_ip}, status="FAILURE"
         )
-        raise HTTPException(...) # The original exception
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},) # The original exception
     
     # Log successful login
     history_crud.create_audit_event(
